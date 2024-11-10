@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "action.h"
 #include "wait.h"
 #include "keycode_config.h"
+#include "rgb_matrix/rgb_matrix.h"
 
 #ifdef BACKLIGHT_ENABLE
 #    include "backlight.h"
@@ -864,6 +865,7 @@ void process_action(keyrecord_t *record, action_t action) {
  *
  * FIXME: Needs documentation.
  */
+extern int need_report;
 __attribute__((weak)) void register_code(uint8_t code) {
     if (code == KC_NO) {
         return;
@@ -913,7 +915,9 @@ __attribute__((weak)) void register_code(uint8_t code) {
             send_keyboard_report();
         }
         add_key(code);
-        send_keyboard_report();
+        need_report = 1;
+        if (rgb_matrix_is_enabled())
+            send_keyboard_report();
     } else if (IS_MODIFIER_KEYCODE(code)) {
         add_mods(MOD_BIT(code));
         send_keyboard_report();

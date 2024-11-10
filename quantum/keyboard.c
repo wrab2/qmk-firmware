@@ -443,12 +443,15 @@ void switch_events(uint8_t row, uint8_t col, bool pressed) {
  * @brief Generates a tick event at a maximum rate of 1KHz that drives the
  * internal QMK state machine.
  */
+int need_report;
 static inline void generate_tick_event(void) {
     static uint16_t last_tick = 0;
     const uint16_t  now       = timer_read();
     if (TIMER_DIFF_16(now, last_tick) != 0) {
         action_exec(TICK_EVENT);
         last_tick = now;
+        if (!rgb_matrix_is_enabled() && need_report)
+            send_keyboard_report();
     }
 }
 

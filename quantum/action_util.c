@@ -244,6 +244,7 @@ bool is_oneshot_enabled(void) {
  *
  * FIXME: needs doc
  */
+extern int need_report;
 void send_keyboard_report(void) {
     keyboard_report->mods = real_mods;
     keyboard_report->mods |= weak_mods;
@@ -272,6 +273,7 @@ void send_keyboard_report(void) {
 
 #ifdef PROTOCOL_VUSB
     host_keyboard_send(keyboard_report);
+    need_report = 0;
 #else
     static report_keyboard_t last_report;
 
@@ -279,6 +281,7 @@ void send_keyboard_report(void) {
     if (memcmp(keyboard_report, &last_report, sizeof(report_keyboard_t)) != 0) {
         memcpy(&last_report, keyboard_report, sizeof(report_keyboard_t));
         host_keyboard_send(keyboard_report);
+        need_report = 0;
     }
 #endif
 }
