@@ -974,7 +974,9 @@ __attribute__((weak)) void unregister_code(uint8_t code) {
 
     } else if (IS_BASIC_KEYCODE(code)) {
         del_key(code);
-        send_keyboard_report();
+        need_report = 1;
+        if (rgb_matrix_is_enabled())
+            send_keyboard_report();
     } else if (IS_MODIFIER_KEYCODE(code)) {
         del_mods(MOD_BIT(code));
         send_keyboard_report();
