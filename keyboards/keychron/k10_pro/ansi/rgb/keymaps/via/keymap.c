@@ -55,3 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,  _______,  _______,                                _______,                                _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______,            _______          )
 };
 
+const uint16_t PROGMEM ansi_bad[] = {KC_BSLS, KC_ENT, COMBO_END};
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(ansi_bad,      KC_ENT)
+};
